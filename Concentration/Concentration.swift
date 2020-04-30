@@ -9,8 +9,8 @@
 import Foundation
 class Concentration
 {
-    var cards = [Card]()
-    var indexOfOneAndOnlyFaceUpCard :  Int? {
+    private(set) var cards = [Card]()
+    private var indexOfOneAndOnlyFaceUpCard :  Int? {
         get{
             var foundIndex: Int?
             for index in cards.indices{
@@ -30,8 +30,8 @@ class Concentration
             }
         }
     }
-    var points = 0
-    var flipCounts = 0
+    private(set) var points = 0
+    private(set) var flipCounts = 0
     
     func chooseCard(at index : Int){
         if !cards[index].isMatched{
@@ -46,14 +46,9 @@ class Concentration
                     points = cards[matchIndex].isAlreadySeen ? points - 1 : points
                 }
                 cards[index].isFaceUp = true
-                //indexOfOneAndOnlyFaceUpCard = nil
                 cards[index].isAlreadySeen = true
                 cards[matchIndex].isAlreadySeen = true
             } else {
-//                for flipDownIndex in cards.indices{
-//                    cards[flipDownIndex].isFaceUp = false
-//                }
-//                cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = index
             }
         }

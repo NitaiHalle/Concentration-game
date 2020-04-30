@@ -10,16 +10,16 @@ import UIKit
 
 class ViewController: UIViewController {
      
-    lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+    private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     
     var numberOfPairsOfCards : Int{
         return (cardButtons.count + 1)/2
     }
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private var cardButtons: [UIButton]!
     
-    lazy var currentTheme = themes.randomElement()!
-    let themes : [(name : String , emoji : [String] , backColorCard : UIColor, frontColorCard : UIColor)] =
+    private lazy var currentTheme = themes.randomElement()!
+    private let themes : [(name : String , emoji : [String] , backColorCard : UIColor, frontColorCard : UIColor)] =
         [("smileies",["😀","😃","😄","😁","😆","😅","😂","🤣","😜","🤪","💩","🤡"] ,#colorLiteral(red: 0, green: 1, blue: 0, alpha: 1),#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
          ("charcters",["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],#colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1),#colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)),
          ("animals",["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐸","🐵","🦍","🦏","🐪","🦒","🦘","🐃","🐂"    ,"🐄","🐎","🐖","🐏"] ,#colorLiteral(red: 1, green: 0.7159882188, blue: 0.6841184497, alpha: 1),#colorLiteral(red: 0.2969636321, green: 0.6666125059, blue: 1, alpha: 1)),
@@ -27,16 +27,16 @@ class ViewController: UIViewController {
          ("flags",["🇱🇷","🇮🇹","🇮🇱","🇮🇪","🇮🇳","🇬🇪","🇩🇪","🇬🇷","🇭🇺","🇫🇰","🇪🇺","🇪🇹","🇬🇶","🇪🇬","🇩🇴","🇩🇯","🇨🇦","🇨🇱","🇧🇷","🇧🇪"] ,#colorLiteral(red: 0, green: 1, blue: 0.7473010421, alpha: 1),#colorLiteral(red: 0.1322995424, green: 0.3210541904, blue: 1, alpha: 1)),
          ("hands",["🤙","👋","🖖","🖐️","🤚","👇","👉","👈","👌","🤘","✌️","🤞","🤜","🤛","✊","👊","👎","👍🏻","👏","🙌"] ,#colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1),#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)),]
     
-    @IBOutlet weak var flipsCountLabel: UILabel!
+    @IBOutlet private weak var flipsCountLabel: UILabel!
     
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         
         let cardNumber = cardButtons.firstIndex(of: sender)!
         game.chooseCard(at: cardNumber)
         updateViewFromModel()
     }
     
-    func updateViewFromModel(){
+    private func updateViewFromModel(){
         for idx in cardButtons.indices{
             let button = cardButtons[idx]
             let card = game.cards[idx]
@@ -50,20 +50,20 @@ class ViewController: UIViewController {
         }
         flipsCountLabel.text = "Flips : \(game.flipCounts)"
     }
-    var emoji = [Int:String]()
+    private var emoji = [Int:String]()
     
-    lazy var emojiChoices = currentTheme.emoji
+    private lazy var emojiChoices = currentTheme.emoji
     
-    func emoji(for card : Card) -> String{
+    private func emoji(for card : Card) -> String{
         
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
+            let randomIndex = Int.random(in: 0..<emojiChoices.count)//(arc4random_uniform(UInt32(emojiChoices.count)))
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
         }
         return emoji[card.identifier] ?? "king"
     }
     
-    @IBAction func newGame() {
+    @IBAction private func newGame() {
         game.reset()
         emoji.removeAll()
         currentTheme = themes.randomElement()!
