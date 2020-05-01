@@ -50,17 +50,17 @@ class ViewController: UIViewController {
         }
         flipsCountLabel.text = "Flips : \(game.flipCounts)"
     }
-    private var emoji = [Int:String]()
+    private var emoji = [Card:String]()
     
     private lazy var emojiChoices = currentTheme.emoji
     
     private func emoji(for card : Card) -> String{
         
-        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            let randomIndex = Int.random(in: 0..<emojiChoices.count)//(arc4random_uniform(UInt32(emojiChoices.count)))
-            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+        if emoji[card] == nil, emojiChoices.count > 0 {
+            let randomIndex = Int.random(in: 0..<emojiChoices.count) //(arc4random_uniform(UInt32(emojiChoices.count)))
+            emoji[card] = emojiChoices.remove(at: randomIndex)
         }
-        return emoji[card.identifier] ?? "king"
+        return emoji[card] ?? "king"
     }
     
     @IBAction private func newGame() {
