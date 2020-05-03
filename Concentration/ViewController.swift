@@ -16,8 +16,12 @@ class ViewController: UIViewController {
         return (cardButtons.count + 1)/2
     }
     
-    @IBOutlet private var cardButtons: [UIButton]!
-    
+    @IBOutlet private var cardButtons: [UIButton]!{
+        didSet{
+            updateCardsFromModel()
+        }
+    }
+
     private lazy var currentTheme = themes.randomElement()!
     private let themes : [(name : String , emoji : [String] , backColorCard : UIColor, frontColorCard : UIColor)] =
         [("smileies",["😀","😃","😄","😁","😆","😅","😂","🤣","😜","🤪","💩","🤡"] ,#colorLiteral(red: 0, green: 1, blue: 0, alpha: 1),#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
@@ -30,13 +34,17 @@ class ViewController: UIViewController {
     @IBOutlet private weak var flipsCountLabel: UILabel!
     
     @IBAction private func touchCard(_ sender: UIButton) {
-        
         let cardNumber = cardButtons.firstIndex(of: sender)!
         game.chooseCard(at: cardNumber)
         updateViewFromModel()
     }
     
     private func updateViewFromModel(){
+        updateCardsFromModel()
+        flipsCountLabel.text = "Flips : \(game.flipCounts)"
+    }
+    
+    private func updateCardsFromModel(){
         for idx in cardButtons.indices{
             let button = cardButtons[idx]
             let card = game.cards[idx]
@@ -48,8 +56,8 @@ class ViewController: UIViewController {
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : currentTheme.frontColorCard
             }
         }
-        flipsCountLabel.text = "Flips : \(game.flipCounts)"
     }
+    
     private var emoji = [Card:String]()
     
     private lazy var emojiChoices = currentTheme.emoji
