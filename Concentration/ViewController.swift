@@ -22,6 +22,7 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var pointsLabel: UILabel!
     private lazy var currentTheme = themes.randomElement()!
     private let themes : [(name : String , emoji : [String] , backColorCard : UIColor, frontColorCard : UIColor)] =
         [("smileies",["😀","😃","😄","😁","😆","😅","😂","🤣","😜","🤪","💩","🤡"] ,#colorLiteral(red: 0, green: 1, blue: 0, alpha: 1),#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)),
@@ -42,6 +43,7 @@ class ViewController: UIViewController {
     private func updateViewFromModel(){
         updateCardsFromModel()
         flipsCountLabel.text = "Flips : \(game.flipCounts)"
+        pointsLabel.text = "Points : \(game.points)"
     }
     
     private func updateCardsFromModel(){
